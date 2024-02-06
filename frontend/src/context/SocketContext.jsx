@@ -15,7 +15,7 @@ export const SocketContextProvider = ({ children }) => {
   const user = useRecoilValue(userAtom);
 
   useEffect(() => {
-    const socket = io("http://localhost:5000", {
+    const socket = io("https://mern-threads-clone-9fm9.onrender.com", {
       query: {
         userId: user?._id,
       },
