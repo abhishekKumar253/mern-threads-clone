@@ -76,7 +76,10 @@ const PostPage = () => {
   }
 
   if (!currentPost) return null;
+<<<<<<< HEAD
   console.log("currentPost", currentPost);
+=======
+>>>>>>> 132e7e072fb205b63eecd0cd77b13f2b07172b23
 
   return (
     <>

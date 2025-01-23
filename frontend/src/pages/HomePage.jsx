@@ -7,6 +7,7 @@ import postsAtom from "../atoms/postsAtom";
 import SuggestedUsers from "../components/SuggestedUsers";
 
 const HomePage = () => {
+<<<<<<< HEAD
   const [posts, setPosts] = useRecoilState(postsAtom);
   const [loading, setLoading] = useState(true);
   const showToast = useShowToast();
@@ -35,6 +36,36 @@ const HomePage = () => {
   return (
     <Flex gap="10" alignItems={"flex-start"} flexWrap={"wrap"}>
       <Box flex={{ base: 100, md: 70 }}>
+=======
+	const [posts, setPosts] = useRecoilState(postsAtom);
+	const [loading, setLoading] = useState(true);
+	const showToast = useShowToast();
+	useEffect(() => {
+		const getFeedPosts = async () => {
+			setLoading(true);
+			setPosts([]);
+			try {
+				const res = await fetch("/api/posts/feed");
+				const data = await res.json();
+				if (data.error) {
+					showToast("Error", data.error, "error");
+					return;
+				}
+				console.log(data);
+				setPosts(data);
+			} catch (error) {
+				showToast("Error", error.message, "error");
+			} finally {
+				setLoading(false);
+			}
+		};
+		getFeedPosts();
+	}, [showToast, setPosts]);
+
+	return (
+    <Flex gap="10" alignItems={"flex-start"}>
+      <Box flex={70}>
+>>>>>>> 132e7e072fb205b63eecd0cd77b13f2b07172b23
         {!loading && posts.length === 0 && (
           <h1>Follow some users to see the feed</h1>
         )}
@@ -50,7 +81,11 @@ const HomePage = () => {
         ))}
       </Box>
       <Box
+<<<<<<< HEAD
         flex={{ base: 100, md: 30 }}
+=======
+        flex={30}
+>>>>>>> 132e7e072fb205b63eecd0cd77b13f2b07172b23
         display={{
           base: "none",
           md: "block",

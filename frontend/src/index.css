@@ -1,4 +1,5 @@
 .icon-container {
+<<<<<<< HEAD
   border-radius: 50%;
   padding: 8px;
   width: 40px;
@@ -23,4 +24,30 @@
 }
 ::-webkit-scrollbar-thumb {
   background-color: #555;
+=======
+	border-radius: 50%;
+	padding: 8px;
+	width: 40px;
+	height: 40px;
+	transition: background-color 0.3s ease-in-out;
+}
+
+.icon-container:hover {
+	background-color: #1e1e1e;
+}
+
+::-webkit-scrollbar {
+	width: 7px;
+}
+
+::-webkit-scrollbar-track {
+	background-color: #1e1e1e;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #888;
+}
+::-webkit-scrollbar-thumb {
+	background-color: #555;
+>>>>>>> 132e7e072fb205b63eecd0cd77b13f2b07172b23
 }

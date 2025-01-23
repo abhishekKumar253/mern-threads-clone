@@ -7,7 +7,10 @@ import Post from "../components/Post";
 import useGetUserProfile from "../hooks/useGetUserProfile";
 import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postsAtom";
+<<<<<<< HEAD
 import UserPost from "../components/UserPost";
+=======
+>>>>>>> 132e7e072fb205b63eecd0cd77b13f2b07172b23
 
 const UserPage = () => {
   const { user, loading } = useGetUserProfile();
@@ -23,7 +26,10 @@ const UserPage = () => {
       try {
         const res = await fetch(`/api/posts/user/${username}`);
         const data = await res.json();
+<<<<<<< HEAD
         console.log(data);
+=======
+>>>>>>> 132e7e072fb205b63eecd0cd77b13f2b07172b23
         setPosts(data);
       } catch (error) {
         showToast("Error", error.message, "error");
@@ -60,10 +66,13 @@ const UserPage = () => {
       {posts.map((post) => (
         <Post key={post._id} post={post} postedBy={post.postedBy} />
       ))}
+<<<<<<< HEAD
 
       <UserPost likes={1200} replies={481} postImg="/post1.png" postTitle="Let's talk about the future of work" />
       <UserPost likes={451} replies={12} postImg="/post2.png" postTitle="How to be a better developer" />
       <UserPost likes={321} replies={989} postImg="/post3.png" postTitle="This is a post title" />
+=======
+>>>>>>> 132e7e072fb205b63eecd0cd77b13f2b07172b23
     </>
   );
 };

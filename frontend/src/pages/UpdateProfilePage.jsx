@@ -94,20 +94,34 @@ export default function UpdateProfilePage() {
               </Center>
             </Stack>
           </FormControl>
+<<<<<<< HEAD
           <FormControl>
             <FormLabel>Full name</FormLabel>
             <Input
               placeholder="John Doe"
+=======
+          <FormControl isRequired>
+            <FormLabel>Full name</FormLabel>
+            <Input
+              placeholder="Abhishek Kumar"
+>>>>>>> 132e7e072fb205b63eecd0cd77b13f2b07172b23
               value={inputs.name}
               onChange={(e) => setInputs({ ...inputs, name: e.target.value })}
               _placeholder={{ color: "gray.500" }}
               type="text"
             />
           </FormControl>
+<<<<<<< HEAD
           <FormControl>
             <FormLabel>User name</FormLabel>
             <Input
               placeholder="johndoe"
+=======
+          <FormControl isRequired>
+            <FormLabel>User name</FormLabel>
+            <Input
+              placeholder="abhishek"
+>>>>>>> 132e7e072fb205b63eecd0cd77b13f2b07172b23
               value={inputs.username}
               onChange={(e) =>
                 setInputs({ ...inputs, username: e.target.value })
@@ -116,7 +130,11 @@ export default function UpdateProfilePage() {
               type="text"
             />
           </FormControl>
+<<<<<<< HEAD
           <FormControl>
+=======
+          <FormControl isRequired>
+>>>>>>> 132e7e072fb205b63eecd0cd77b13f2b07172b23
             <FormLabel>Email address</FormLabel>
             <Input
               placeholder="your-email@example.com"
@@ -136,7 +154,11 @@ export default function UpdateProfilePage() {
               type="text"
             />
           </FormControl>
+<<<<<<< HEAD
           <FormControl>
+=======
+          <FormControl isRequired>
+>>>>>>> 132e7e072fb205b63eecd0cd77b13f2b07172b23
             <FormLabel>Password</FormLabel>
             <Input
               placeholder="password"

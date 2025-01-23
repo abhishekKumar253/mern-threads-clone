@@ -6,6 +6,7 @@ import userAtom from "../atoms/userAtom";
 const SocketContext = createContext();
 
 export const useSocket = () => {
+<<<<<<< HEAD
 	return useContext(SocketContext);
 };
 
@@ -30,4 +31,34 @@ export const SocketContextProvider = ({ children }) => {
 	}, [user?._id]);
 
 	return <SocketContext.Provider value={{ socket, onlineUsers }}>{children}</SocketContext.Provider>;
+=======
+  return useContext(SocketContext);
+};
+
+export const SocketContextProvider = ({ children }) => {
+  const [socket, setSocket] = useState(null);
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  const user = useRecoilValue(userAtom);
+
+  useEffect(() => {
+    const socket = io("https://mern-threads-clone-9fm9.onrender.com", {
+      query: {
+        userId: user?._id,
+      },
+    });
+
+    setSocket(socket);
+
+    socket.on("getOnlineUsers", (users) => {
+      setOnlineUsers(users);
+    });
+    return () => socket && socket.close();
+  }, [user?._id]);
+
+  return (
+    <SocketContext.Provider value={{ socket, onlineUsers }}>
+      {children}
+    </SocketContext.Provider>
+  );
+>>>>>>> 132e7e072fb205b63eecd0cd77b13f2b07172b23
 };

@@ -63,7 +63,10 @@ const ChatPage = () => {
           showToast("Error", data.error, "error");
           return;
         }
+<<<<<<< HEAD
         console.log(data);
+=======
+>>>>>>> 132e7e072fb205b63eecd0cd77b13f2b07172b23
         setConversations(data);
       } catch (error) {
         showToast("Error", error.message, "error");
