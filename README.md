@@ -21,6 +21,7 @@ A real-time social platform built using the MERN stack, featuring user authentic
 - 💬 **Chat App with Image Support**: Real-time chat functionality with image support.
 - 👀 **Seen/Unseen Status**: Track whether messages have been seen or not.
 - 🔊 **Notification Sounds**: Play notification sounds for new messages.
+- 🔔 **Notifications:** Receive real-time notifications for likes, comments, and follows.
 
 ### Responsive Design:
 
