@@ -1,4 +1,5 @@
 import express from "express";
+import { protectRoute } from "../middlewares/protectRoute.js";
 import {
   createPost,
   deletePost,
@@ -8,7 +9,6 @@ import {
   likeUnlikePost,
   replyToPost,
 } from "../controllers/post.controller.js";
-import { protectRoute } from "../middlewares/protectRoute.js";
 
 const router = express.Router();
 

@@ -36,7 +36,6 @@ export const login = async (req, res) => {
     });
 
     if (!user) {
-      console.log("User not found");
       return res.status(400).json({ message: "Invalid credentials" });
     }
 

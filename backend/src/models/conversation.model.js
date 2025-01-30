@@ -12,6 +12,7 @@ const conversationSchema = new mongoose.Schema(
       text: {
         type: String,
         trim: true,
+        default: "",
       },
       sender: {
         type: mongoose.Schema.Types.ObjectId,

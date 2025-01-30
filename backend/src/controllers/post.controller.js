@@ -1,6 +1,8 @@
 import User from "../models/user.model.js";
 import Post from "../models/post.model.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { v2 as cloudinary } from "cloudinary";
+import mongoose from "mongoose";
+import Notification from "../models/notification.model.js";
 
 export const createPost = async (req, res) => {
   try {
@@ -32,23 +34,34 @@ export const createPost = async (req, res) => {
     }
 
     if (img) {
-      const uploadedResponse = await uploadOnCloudinary(img);
-      img = uploadedResponse.secure_url;
+      try {
+        const uploadedResponse = await cloudinary.uploader.upload(img);
+        img = uploadedResponse.secure_url;
+      } catch (uploadError) {
+        return res.status(500).json({ error: "Image upload failed" });
+      }
     }
 
     const newPost = new Post({ postedBy, text, img });
     await newPost.save();
 
-    res.status(202).json({ message: "Post created successfully" });
+    res.status(202).json({
+      message: "Post created successfully",
+      post: newPost,
+    });
   } catch (error) {
+    console.log("Error in create post controller", error.message);
     res.status(500).json({ error: "Error in create post controller" });
   }
 };
 
 export const getPost = async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ error: "Invalid post ID" });
+    }
 
+    const post = await Post.findById(req.params.id);
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
@@ -74,7 +87,7 @@ export const deletePost = async (req, res) => {
 
     if (post.img) {
       const imgId = post.img.split("/").pop().split(".")[0];
-      await uploadOnCloudinary.destroy(imgId);
+      await cloudinary.uploader.destroy(imgId);
     }
 
     await Post.findByIdAndDelete(req.params.id);
@@ -91,7 +104,6 @@ export const likeUnlikePost = async (req, res) => {
     const userId = req.user._id;
 
     const post = await Post.findById(postId);
-
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
@@ -101,22 +113,45 @@ export const likeUnlikePost = async (req, res) => {
     if (userLikedPost) {
       // Unlike post
       await Post.updateOne({ _id: postId }, { $pull: { likes: userId } });
-      res.status(200).json({ message: "Post unliked successfully" });
+      await User.updateOne({ _id: userId }, { $pull: { likedPosts: postId } });
+
+      const updatedLikes = post.likes.filter(
+        (id) => id.toString() !== userId.toString()
+      );
+      res.status(200).json({
+        updatedLikes,
+        message: "Post unliked successfully",
+      });
     } else {
       // Like post
       post.likes.push(userId);
+      await User.updateOne({ _id: userId }, { $push: { likedPosts: postId } });
       await post.save();
-      res.status(200).json({ message: "Post liked successfully" });
+
+      if (post.postedBy) {
+        const notification = new Notification({
+          from: userId,
+          to: post.postedBy,
+          type: "like",
+        });
+        await notification.save();
+
+        const updatedLikes = post.likes;
+        res
+          .status(200)
+          .json({ updatedLikes, message: "Post liked successfully" });
+      } else {
+        res.status(500).json({ error: "Post user not found for notification" });
+      }
     }
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Error in like/unlike post controller", error });
+    console.error(error);
+    res.status(500).json({ error: "Error in like/unlike post controller" });
   }
 };
 
 export const replyToPost = async (req, res) => {
-  try {
+  try { 
     const { text } = req.body;
     const postId = req.params.id;
     const userId = req.user._id;
@@ -127,7 +162,7 @@ export const replyToPost = async (req, res) => {
       return res.status(400).json({ error: "Text field is required" });
     }
 
-    const post = await Post.findById(postId);
+    const post = await Post.findById(postId).populate("postedBy");
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
@@ -136,9 +171,17 @@ export const replyToPost = async (req, res) => {
 
     post.replies.push(reply);
     await post.save();
+    
+    if (post.postedBy._id.toString() !== userId.toString()) {
+      const notification = new Notification({
+        from: userId,
+        to: post.postedBy._id,
+        type: "reply",
+      });
 
+      await notification.save();
+    }
     res.status(200).json(reply);
-    2;
   } catch (error) {
     res.status(500).json({ error: "Error in reply to post controller" });
   }
